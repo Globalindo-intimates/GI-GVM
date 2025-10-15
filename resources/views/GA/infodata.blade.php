@@ -143,7 +143,7 @@
                 const month = monthSelect.value;
                 const year = yearSelect.value;
 
-                window.open(`/print/${currentId}?month=${month}&year=${year}`, '_blank');
+                window.open(`{{ url('print') }}/${currentId}?month=${month}&year=${year}`, '_blank');
             });
 
             // Fungsi load data
