@@ -159,7 +159,7 @@
                 loadingDiv.classList.remove('hidden');
                 contentDiv.innerHTML = '';
 
-                const url = `/ga/detail/${id}?tanggal=${tanggal}`;
+                const url = {{ url('ga/detail/${id}?tanggal=${tanggal}') }};
                 console.log('URL Request:', url);
 
                 fetch(url, {
@@ -169,6 +169,7 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
+
                     .then(res => {
                         if (!res.ok) {
                             throw new Error('Connection error. Please try again.');
