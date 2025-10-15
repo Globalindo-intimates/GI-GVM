@@ -82,7 +82,6 @@
                 </div>
             </div>
         </div>
-    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
@@ -159,8 +158,7 @@
                 loadingDiv.classList.remove('hidden');
                 contentDiv.innerHTML = '';
 
-                const url = {{ url('ga/detail/${id}?tanggal=${tanggal}') }};
-                console.log('URL Request:', url);
+                const url = `{{ url('ga/detail') }}/${id}?tanggal=${tanggal}`;
 
                 fetch(url, {
                     method: 'GET',
@@ -169,7 +167,6 @@
                         'X-Requested-With': 'XMLHttpRequest'
                     }
                 })
-
                     .then(res => {
                         if (!res.ok) {
                             throw new Error('Connection error. Please try again.');
