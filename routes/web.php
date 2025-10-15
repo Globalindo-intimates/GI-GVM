@@ -62,8 +62,13 @@ Route::put('/update/{id}', [\App\Http\Controllers\MasterController::class,'updat
 Route::delete('/delete/{id}', [\App\Http\Controllers\MasterController::class,'destroy'])->name('master.delete');
 Route::get('/tersimpan', [App\Http\Controllers\DataController::class,'getKendaraan'])->name('master.tersimpan');
 
+// USER
+Route::post('/simpanuser', [App\Http\Controllers\UserController::class, 'store'])->name('user.store');
+Route::put('/updateuser/{id}', [\App\Http\Controllers\UserController::class,'update'])->name('user.update');
+Route::delete('/deleteuser/{id}', [\App\Http\Controllers\UserController::class,'destroy'])->name('user.delete');
 
 // ADMIN
 Route::get('/dashboardAdmin', [\App\Http\Controllers\ContentController::class, 'dashboardAdmin'])->name('content.dashboardAdmin');
 Route::get('/masterdata', [\App\Http\Controllers\ContentController::class,'master'])->name('content.master');
+Route::get('/user', [\App\Http\Controllers\ContentController::class,'user'])->name('content.user');
 //Route::post('/dashboard', [\App\Http\Controllers\ContentController::class, 'dashboard'])->name('content.dashboard');

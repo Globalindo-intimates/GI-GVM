@@ -66,8 +66,7 @@
                                         <input type="text" id="username" name="username"
                                             class="form-input w-full border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 dark:focus:border-custom-800 dark:bg-zink-700 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                             placeholder="Masukkan Username"  required>
-                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Masukkan
-                                            Username Anda </div>
+                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter username</div>
                                     </div>
 
                                     <!-- Nama Lengkap -->
@@ -77,8 +76,7 @@
                                         <input type="text" id="nama" name="nama"
                                             class="form-input w-full border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 dark:focus:border-custom-800 dark:bg-zink-700 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                             placeholder="Masukkan Nama Lengkap"  required>
-                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Masukkan Nama
-                                            Lengkap Anda</div>
+                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter full name</div>
                                     </div>
 
                                     <!-- Password -->
@@ -88,8 +86,7 @@
                                         <input type="password" id="password" name="password"
                                             class="form-input w-full border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 dark:focus:border-custom-800 dark:bg-zink-700 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                             placeholder="Masukkan Password" required>
-                                        <div id="password-error" class="hidden mt-1 text-sm text-red-500">Masukkan
-                                            Password Anda</div>
+                                        <div id="password-error" class="hidden mt-1 text-sm text-red-500">Please enter password</div>
                                     </div>
 
                                     <!-- Department -->

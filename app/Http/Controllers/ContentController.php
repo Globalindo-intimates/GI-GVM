@@ -207,9 +207,15 @@ class ContentController extends Controller
         $data = DB::connection('mysql')->select("SELECT * FROM masterdata_models WHERE id = '$id'");
         return response()->json(['data' => $data]);
     }
-    public function simpanAjax(Request $request)
+    public function user(): View
     {
-
+        $data = [
+            'title' => 'User Data | GI-GVM',
+            'menu' => 'Content',
+            'sub_menu' => 'Dashboard',
+            'users' => PenggunaModel::latest()->paginate(10)
+        ];
+        return view('admin.user', $data);
     }
 }
 
