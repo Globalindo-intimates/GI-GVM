@@ -55,6 +55,7 @@ Route::put('/{id}/status', [\App\Http\Controllers\GeneralaffController::class,'u
 Route::delete('/{id}/delete', [\App\Http\Controllers\GeneralaffController::class,'destroy'])->name('data.delete');
 Route::get('/ga/detail/{id}', [\App\Http\Controllers\GeneralaffController::class,'detailData']);
 Route::get('/print/{id}', [\App\Http\Controllers\GeneralaffController::class,'print'])->name('GA.print');
+// Di routes/web.php
 
 //MASTERDATA
 Route::post('/simpandata', [App\Http\Controllers\MasterController::class, 'store'])->name('master.store');

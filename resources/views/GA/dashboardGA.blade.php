@@ -146,7 +146,14 @@
                     scales: {
                         y: {
                             beginAtZero: true,
-                            ticks: { color: '#6b7280' },
+                            ticks: {
+                                color: '#6b7280',
+                                stepSize: 1,     
+                                precision: 0,         
+                                callback: function(value) {
+                                    return Number.isInteger(value) ? value : null;
+                                }
+                            },
                             grid: { color: '#e5e7eb' }
                         },
                         x: {
