@@ -66,7 +66,7 @@
             </div>
             <div class="mt-3 flex gap-2">
                 <button id="close-detail"
-                    class="px-4 py-2 bg-red-500 text-white rounded transition-colors">Tutup</button>
+                    class="px-4 py-2 bg-red-500 text-white rounded transition-colors">Close</button>
             </div>
         </div>
     </div>

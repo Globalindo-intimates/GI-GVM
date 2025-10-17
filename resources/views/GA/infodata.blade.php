@@ -2,7 +2,7 @@
 @section('content')
         <div class="card mt-3">
             <div class="card-body">
-                <h6 class="mb-4 text-15">Vehicle Records</h6>
+                <h5 class="mb-4 text-20">Vehicle Records</h5>
                 <table class="table-auto w-full border-collapse border border-custom-300 text-sm" id="my-table">
                     <thead class="bg-custom-200">
                         <tr>

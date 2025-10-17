@@ -1,8 +1,7 @@
 @extends('content.app')
 @section('content')
-    <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
-        <div class="flex flex-col gap-2 py-4 md:flex-row md:items-center print:hidden">
-            <div class="flex gap-2 mb-4">
+<div class="card mt-3">
+    <div class="card-body container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
                 <button id="tab-pending"
                     class="px-6 py-2 border-collapse border bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
                     Unverified
@@ -11,14 +10,10 @@
                     class="px-6 py-2 border-collapse border bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors">
                     Verified
                 </button>
-            </div>
-        </div>
-    </div>
-
     <!-- Tabel Belum Diverifikasi -->
-    <div id="table-pending" class="card mt-3">
+    <div id="table-pending">
         <div class="card-body">
-            <h6 class="mb-4 text-15">Unverified Vehicle List</h6>
+            <h5 class="mb-4 text-20">Unverified Vehicle List</h5>
             <table class="table-auto w-full border-collapse border border-custom-300 text-sm" id="table-pending-data">
                 <thead class="bg-custom-200">
                     <tr>
@@ -86,9 +81,9 @@
     </div>
 
     <!-- Tabel Sudah Diverifikasi -->
-    <div id="table-verified" class="card mt-3 hidden">
+    <div id="table-verified" class=" hidden">
         <div class="card-body">
-            <h6 class="mb-4 text-15">Verified Vehicle List</h6>
+            <h5 class="mb-4 text-20">Verified Vehicle List</h5>
             <table class="table-auto w-full border-collapse border border-custom-300 text-sm" id="table-verified-data">
                 <thead class="bg-custom-200">
                     <tr>
@@ -158,6 +153,8 @@
             </table>
         </div>
     </div>
+    </div>
+    </div>
 
     <!-- Modal Verifikasi -->
     <div id="verification-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50">
@@ -194,11 +191,11 @@
                 <div class="flex gap-2 justify-end">
                     <button type="button" id="cancel-verification"
                         class="px-4 py-2 bg-red-500 hover:bg-red-500 text-white rounded transition-colors">
-                        Batal
+                        Cancel
                     </button>
                     <button type="submit"
                         class="px-4 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors">
-                        Simpan
+                        Save
                     </button>
                 </div>
             </form>
@@ -215,7 +212,7 @@
             </div>
             <div class="mt-3 flex gap-2">
                 <button id="close-detail"
-                    class="px-4 py-2 bg-red-500 text-white rounded transition-colors">Tutup</button>
+                    class="px-4 py-2 bg-red-500 text-white rounded transition-colors">Close</button>
             </div>
         </div>
     </div>

@@ -1,26 +1,26 @@
     @extends('content.app')
     @section('content')
     <div class="container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
-
-        {{-- Header --}}
-        <div class="flex flex-col gap-2 py-6 md:flex-row md:items-center justify-between print:hidden">
-            <div>
-                <h3 class="text-lg font-bold text-gray-800 dark:text-white">Welcome To General Vehicle Maintenance!</h3>
-            </div>
-            <ul class="flex items-center text-sm font-medium text-gray-500 dark:text-gray-300 space-x-2">
-                <li><a href="{{ url('dashboardUser') }}" class="hover:text-green-600">GI-GVM</a></li>
-                <li>||</li>
-                <li class="text-gray-700 dark:text-white">Dashboard</li>
-            </ul>
+        <div class="flex flex-col gap-2 py-2 md:flex-row md:items-center justify-between print:hidden">
         </div>
-        {{-- Statistik Ringkas --}}
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-6">
+        {{-- Header --}}
+        <div class="card overflow-x-auto rounded">
+            <div class="card-body flex flex-col print:hidden">
+                <h4 class="font-semibold text-gray-800 dark:text-gray-200">
+                    Vehicle Maintenance Report Dashboard
+                </h4>
+                <p class="text-sm text-gray-500 dark:text-gray-400">
+                    From {{ date('F Y') }} records
+                </p>
+            </div>
+
+            <div class="card-body grid grid-cols-1 md:grid-cols-2">
 
             {{-- Total Data Kendaraan --}}
             <div class="card relative rounded-3xl bg-white dark:bg-zinc-800 p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-zinc-700 transition-all hover:-translate-y-1">
-                <div class="absolute top-0 left-0 w-1.5 bg-orange-500 h-full rounded-l-3xl"></div>
+                <div class="absolute top-0 left-0 w-1.5 bg-custom-500 h-full rounded-l-3xl"></div>
                 <div class="flex flex-col items-center text-center space-y-2">
-                    <div class="text-4xl font-bold text-orange-600">{{ $vehicles->count() }}</div>
+                    <div class="text-4xl font-bold text-custom-600">{{ $vehicles->count() }}</div>
                     <p class="text-sm text-gray-500 dark:text-gray-300">Total Records Sent</p>
                 </div>
             </div>
@@ -36,9 +36,9 @@
 
             {{-- Total Unverified --}}
             <div class="card relative rounded-3xl bg-white dark:bg-zinc-800 p-5 shadow-sm hover:shadow-md border border-gray-100 dark:border-zinc-700 transition-all hover:-translate-y-1">
-                <div class="absolute top-0 left-0 w-1.5 bg-red-500 h-full rounded-l-3xl"></div>
+                <div class="absolute top-0 left-0 w-1.5 bg-orange-300 h-full rounded-l-3xl"></div>
                 <div class="flex flex-col items-center text-center space-y-2">
-                    <div class="text-4xl font-bold text-red-600">{{ $vehicles->whereNull('status')->count()}}</div>
+                    <div class="text-4xl font-bold text-orange-400">{{ $vehicles->whereNull('status')->count()}}</div>
                     <p class="text-sm text-gray-500 dark:text-gray-300">Unverified</p>
                 </div>
             </div>
@@ -50,6 +50,7 @@
                     <p class="text-sm text-gray-500 dark:text-gray-300">Rejected ✖</p>
                 </div>
             </div>
+        </div>
         </div>
 
         {{-- Tabel Data Kendaraan --}}
