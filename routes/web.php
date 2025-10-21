@@ -41,6 +41,7 @@ Route::get('/kendaraan', [\App\Http\Controllers\ContentController::class, 'dashb
 Route::post('/simpan', [\App\Http\Controllers\DataController::Class, 'store'])->name('data.store');
 Route::get('/check-existing-data', [\App\Http\Controllers\DataController::class, 'checkExistingData']);
 
+
 //LihatData
 Route::get('/lihatdata/{id}', [\App\Http\Controllers\ContentController::class, 'dashboarddata'])->name('content.lihatdata');
 Route::get('/data', [\App\Http\Controllers\ContentController::class,'dashboardform'])->name('content.form');

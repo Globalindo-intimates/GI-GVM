@@ -2,6 +2,18 @@
 
 ## About
 
+G A 
+username = genaff
+password = 12345678
+
+driver
+username = driver
+password = driver
+
+admin
+username = admin
+password = admin
+
 Template project GI berbasis laravel 12, terintegrasi dengan:
 
 - DataTable

@@ -146,5 +146,58 @@ class DataController extends Controller
 
         return redirect()->route('content.kendaraan')->with('success', 'Vehicle data saved successfully!');
     }
-    
+//     public function update(Request $request, $id)
+// {
+//     $kendaraan = KendaraanModel::findOrFail($id);
+
+//     // Update basic info
+//     $kendaraan->tanggal = $request->tanggal;
+
+//     // Update image kendaraan (jika ada upload baru)
+//     if ($request->hasFile('image')) {
+//         $file = $request->file('image');
+//         $filename = time().'_'.$file->getClientOriginalName();
+//         $file->storeAs('public/vehicle', $filename);
+//         $kendaraan->image = $filename;
+//     }
+
+//     // Loop semua item kontrol
+//     $keyMapping = [
+//         'oli_mesin', 'oli_power_steering', 'oli_rem', 'body_kendaraan', 'otomatis_starter',
+//         'radiator', 'baterai_aki', 'wipers_depan', 'wipers_belakang', 'ban_depan', 'ban_belakang',
+//         'lampu_depan', 'lampu_belakang', 'lampu_rem', 'klakson', 'kebersihan', 'kunci_roda',
+//         'dongkrak', 'kotak_p3k', 'segitiga_pengaman'
+//     ];
+
+//     foreach ($keyMapping as $key) {
+//         $status = $request->$key;
+//         $reasonField = $key . '_reason';
+//         $imageField = $key . '_image';
+
+//         $kendaraan->$key = $status;
+//         $kendaraan->$reasonField = $request->$reasonField;
+
+//         if ($request->hasFile($imageField)) {
+//             $file = $request->file($imageField);
+//             $filename = time().'_'.$file->getClientOriginalName();
+//             $file->storeAs('public/damages', $filename);
+//             $kendaraan->$imageField = $filename;
+//         }
+//     }
+
+//     // Jika semua item ✔, ubah status utama jadi ✔
+//     $hasDamage = false;
+//     foreach ($keyMapping as $key) {
+//         if ($request->$key === '✖') {
+//             $hasDamage = true;
+//             break;
+//         }
+//     }
+
+//     $kendaraan->status = $hasDamage ? '✖' : '✔';
+//     $kendaraan->save();
+
+//     return redirect()->back()->with('success', 'Vehicle data has been successfully updated!');
+// }
+
 }
