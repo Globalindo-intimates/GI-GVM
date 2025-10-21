@@ -65,8 +65,9 @@
                                             class="inline-block mb-2 text-base font-medium">Username</label>
                                         <input type="text" id="username" name="username"
                                             class="form-input w-full border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 dark:focus:border-custom-800 dark:bg-zink-700 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                            placeholder="Masukkan Username"  required>
-                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter username</div>
+                                            placeholder="Masukkan Username" required>
+                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter
+                                            username</div>
                                     </div>
 
                                     <!-- Nama Lengkap -->
@@ -75,8 +76,9 @@
                                             Lengkap</label>
                                         <input type="text" id="nama" name="nama"
                                             class="form-input w-full border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 dark:focus:border-custom-800 dark:bg-zink-700 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200"
-                                            placeholder="Masukkan Nama Lengkap"  required>
-                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter full name</div>
+                                            placeholder="Masukkan Nama Lengkap" required>
+                                        <div id="username-error" class="hidden mt-1 text-sm text-red-500">Please enter
+                                            full name</div>
                                     </div>
 
                                     <!-- Password -->
@@ -86,9 +88,11 @@
                                         <input type="password" id="password" name="password"
                                             class="form-input w-full border-slate-200 dark:border-zink-500 focus:outline-none focus:border-custom-500 dark:focus:border-custom-800 dark:bg-zink-700 dark:text-zink-100 placeholder:text-slate-400 dark:placeholder:text-zink-200"
                                             placeholder="Masukkan Password" required>
-                                        <div id="password-error" class="hidden mt-1 text-sm text-red-500">Please enter password</div>
+                                        <div id="password-error" class="hidden mt-1 text-sm text-red-500">Please enter
+                                            password</div>
                                     </div>
 
+                                    <!-- Department -->
                                     <!-- Department -->
                                     <div class="mb-3">
                                         <label for="department"
@@ -97,8 +101,8 @@
                                         <ul
                                             class="grid grid-cols-2 gap-x-4 gap-y-2 w-full text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg p-3 dark:bg-gray-700 dark:border-gray-600 dark:text-white">
 
-                                            <!-- MIS -->
-                                            <li>
+                                            <!-- MIS (Hidden) -->
+                                            <li class="hidden">
                                                 <div class="flex items-center">
                                                     <input id="department-mis" type="radio" value="MIS"
                                                         name="department"
@@ -118,88 +122,22 @@
                                                 </div>
                                             </li>
 
-                                            <!-- Factory -->
+                                            <!-- Driver (baru) -->
                                             <li>
                                                 <div class="flex items-center">
-                                                    <input id="department-factory" type="radio" value="Factory"
+                                                    <input id="department-driver" type="radio" value="Driver"
                                                         name="department"
                                                         class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-factory"
-                                                        class="ml-2 text-sm font-medium">Factory</label>
+                                                    <label for="department-driver"
+                                                        class="ml-2 text-sm font-medium">Driver</label>
                                                 </div>
                                             </li>
-
-                                            <!-- Production -->
-                                            <li>
-                                                <div class="flex items-center">
-                                                    <input id="department-production" type="radio" value="Production"
-                                                        name="department"
-                                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-production"
-                                                        class="ml-2 text-sm font-medium">Production</label>
-                                                </div>
-                                            </li>
-
-                                            <!-- Warehouse -->
-                                            <li>
-                                                <div class="flex items-center">
-                                                    <input id="department-warehouse" type="radio" value="Warehouse"
-                                                        name="department"
-                                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-warehouse"
-                                                        class="ml-2 text-sm font-medium">Warehouse</label>
-                                                </div>
-                                            </li>
-
-                                            <!-- QC -->
-                                            <li>
-                                                <div class="flex items-center">
-                                                    <input id="department-qc" type="radio" value="QC" name="department"
-                                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-qc"
-                                                        class="ml-2 text-sm font-medium">QC</label>
-                                                </div>
-                                            </li>
-
-                                            <!-- HR -->
-                                            <li>
-                                                <div class="flex items-center">
-                                                    <input id="department-hr" type="radio" value="HR" name="department"
-                                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-hr"
-                                                        class="ml-2 text-sm font-medium">HR</label>
-                                                </div>
-                                            </li>
-
-                                            <!-- PPIC -->
-                                            <li>
-                                                <div class="flex items-center">
-                                                    <input id="department-ppic" type="radio" value="PPIC"
-                                                        name="department"
-                                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-ppic"
-                                                        class="ml-2 text-sm font-medium">PPIC</label>
-                                                </div>
-                                            </li>
-
-                                            <!-- Accounting -->
-                                            <li>
-                                                <div class="flex items-center">
-                                                    <input id="department-accounting" type="radio" value="Accounting"
-                                                        name="department"
-                                                        class="w-4 h-4 text-blue-600 border-gray-300 focus:ring-blue-500">
-                                                    <label for="department-accounting"
-                                                        class="ml-2 text-sm font-medium">Accounting</label>
-                                                </div>
-                                            </li>
-
                                         </ul>
                                     </div>
-
                                     <!-- Sign In Button -->
                                     <div class="mt-10">
-                                        <button type="button"
-                                            id ="signup-btn" class="w-full text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600 focus:bg-custom-600 focus:ring focus:ring-custom-100 dark:ring-custom-400/20">
+                                        <button type="button" id="signup-btn"
+                                            class="w-full text-white btn bg-custom-500 border-custom-500 hover:bg-custom-600 focus:bg-custom-600 focus:ring focus:ring-custom-100 dark:ring-custom-400/20">
                                             Sign Up
                                         </button>
                                     </div>
@@ -236,85 +174,78 @@
                     <p class="max-w-2xl mx-auto text-custom-300 text-base">Engineered by MIS PT.Globalindo Intimates</p>
                 </div>
 
-                <lottie-player
-                    src="{{ asset('public/assets/images/logo/login.json') }}"
-                    speed="1"
-                    style="width: 450px; height: 450px"
-                    loop
-                    autoplay
-                    direction="1"
-                    mode="normal"
-                    class="mx-auto">
+                <lottie-player src="{{ asset('public/assets/images/logo/login.json') }}" speed="1"
+                    style="width: 450px; height: 450px" loop autoplay direction="1" mode="normal" class="mx-auto">
                 </lottie-player>
             </div>
         </div>
     </div>
     <script>
-    const signupBtn = document.getElementById('signup-btn');
+        const signupBtn = document.getElementById('signup-btn');
 
-    signupBtn.addEventListener('click', function () {
-        const username = document.getElementById('username').value.trim();
-        const nama = document.getElementById('nama').value.trim();
-        const password = document.getElementById('password').value.trim();
-        const department = document.querySelector('input[name="department"]:checked');
+        signupBtn.addEventListener('click', function () {
+            const username = document.getElementById('username').value.trim();
+            const nama = document.getElementById('nama').value.trim();
+            const password = document.getElementById('password').value.trim();
+            const department = document.querySelector('input[name="department"]:checked');
 
-        // Validasi form wajib diisi
-        if (username === '' || nama === '' || password === '' || !department) {
-            Swal.fire({
-                title: 'Oops! You missed something',
-                text: 'Please fill out all fields.',
-                icon: 'warning',
-                confirmButtonColor: '#3085d6',
-                confirmButtonText: 'OK'
-            });
-            return;
-        }
-
-        // Validasi ke server apakah username sudah digunakan
-        let url = "{{ url('/auth/validate') }}" + '?username=' + encodeURIComponent(username);
-
-        fetch(url, {
-            method: 'GET',
-            headers: {
-                'X-Requested-With': 'XMLHttpRequest'
-            }
-        })
-            .then(response => response.json())
-            .then(data => {
-                if (data.exists) {
-                    // Username sudah digunakan
-                    Swal.fire({
-                        title: 'Oops! That username’s taken',
-                        text: 'Please choose a different one.',
-                        icon: 'error',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'Retry'
-                    });
-                    return;
-                } else {
-                    // Username tersedia → langsung submit & tampilkan SweetAlert sukses
-                    Swal.fire({
-                        title: 'Your account has been successfully created!!',
-                        icon: 'success',
-                        confirmButtonColor: '#3085d6',
-                        confirmButtonText: 'OK'
-                    }).then(() => {
-                        document.getElementById('signUpForm').submit();
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
+            // Validasi form wajib diisi
+            if (username === '' || nama === '' || password === '' || !department) {
                 Swal.fire({
-                    title: 'Oops! Something went wrong',
-                    text: 'We couldn’t complete your registration. Please try again in a few minutes.',
-                    icon: 'error',
+                    title: 'Oops! You missed something',
+                    text: 'Please fill out all fields.',
+                    icon: 'warning',
                     confirmButtonColor: '#3085d6',
                     confirmButtonText: 'OK'
                 });
-            });
-    });
-</script>
+                return;
+            }
+
+            // Validasi ke server apakah username sudah digunakan
+            let url = "{{ url('/auth/validate') }}" + '?username=' + encodeURIComponent(username);
+
+            fetch(url, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.exists) {
+                        // Username sudah digunakan
+                        Swal.fire({
+                            title: 'Oops! That username’s taken',
+                            text: 'Please choose a different one.',
+                            icon: 'error',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'Retry'
+                        });
+                        return;
+                    } else {
+                        // Username tersedia → langsung submit & tampilkan SweetAlert sukses
+                        Swal.fire({
+                            title: 'Your account has been successfully created!',
+                            icon: 'success',
+                            confirmButtonColor: '#3085d6',
+                            confirmButtonText: 'OK'
+                        }).then(() => {
+                            document.getElementById('signUpForm').submit();
+                        });
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    Swal.fire({
+                        title: 'Oops! Something went wrong',
+                        text: 'We couldn’t complete your registration. Please try again in a few minutes.',
+                        icon: 'error',
+                        confirmButtonColor: '#3085d6',
+                        confirmButtonText: 'OK'
+                    });
+                });
+        });
+    </script>
     <script src="{{ asset('public/assets/libs/choices.js/public/assets/scripts/choices.min.js') }}"></script>
     <script src="{{ asset('public/assets/libs/@popperjs/core/umd/popper.min.js') }}"></script>
     <script src="{{ asset('public/assets/libs/tippy.js/tippy-bundle.umd.min.js') }}"></script>

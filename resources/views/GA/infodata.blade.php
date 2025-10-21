@@ -147,141 +147,178 @@
             });
 
             // Fungsi load data
-            function loadData(id) {
-                const month = monthSelect.value;
-                const year = yearSelect.value;
+// Fungsi load data (lengkap dengan filter status ✔)
+// Fungsi load data (lengkap dengan filter status ✔)
+function loadData(id) {
+    const month = monthSelect.value;
+    const year = yearSelect.value;
 
-                console.log('Memuat data - ID:', id, 'Bulan:', month, 'Tahun:', year);
+    console.log('Memuat data - ID:', id, 'Bulan:', month, 'Tahun:', year);
 
-                const tanggal = `${year}-${month.toString().padStart(2, '0')}-01`;
+    const tanggal = `${year}-${month.toString().padStart(2, '0')}-01`;
 
-                loadingDiv.classList.remove('hidden');
-                contentDiv.innerHTML = '';
+    loadingDiv.classList.remove('hidden');
+    contentDiv.innerHTML = '';
 
-                const url = `{{ url('ga/detail') }}/${id}?tanggal=${tanggal}`;
+    const url = `{{ url('ga/detail') }}/${id}?tanggal=${tanggal}`;
 
-                fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json',
-                        'X-Requested-With': 'XMLHttpRequest'
-                    }
-                })
-                    .then(res => {
-                        if (!res.ok) {
-                            throw new Error('Connection error. Please try again.');
-                        }
-                        return res.json();
-                    })
-                    .then(res => {
-                        console.log('Data Response:', res);
-                        loadingDiv.classList.add('hidden');
+    fetch(url, {
+        method: 'GET',
+        headers: {
+            'Accept': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest'
+        }
+    })
+    .then(res => {
+        if (!res.ok) {
+            throw new Error('Connection error. Please try again.');
+        }
+        return res.json();
+    })
+    .then(res => {
+        console.log('Data Response:', res);
+        loadingDiv.classList.add('hidden');
 
-                        // Simpan info kendaraan jika ada
-                        if (res.vehicle) {
-                            vehicleInfo = res.vehicle;
-                        }
+        // Simpan info kendaraan jika ada
+        if (res.vehicle) {
+            vehicleInfo = res.vehicle;
+        }
 
-                        // Jika tidak ada data, tetap lanjut tapi tampilkan tabel kosong
-                        if (!res.vehicle || !res.tableData || res.tableData.length === 0) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Failed to load data.',
-                                text: 'No data available.',
-                                confirmButtonColor: '#3085d6'
-                            });
-                        }
+        // Jika tidak ada data, tetap lanjut tapi tampilkan tabel kosong
+        if (!res.vehicle || !res.tableData || res.tableData.length === 0) {
+            Swal.fire({
+                icon: 'error',
+                title: 'Failed to load data.',
+                text: 'No data available.',
+                confirmButtonColor: '#3085d6'
+            });
+            return;
+        }
 
-                        const daysInMonth = res.daysInMonth || new Date(year, month, 0).getDate();
-                        const monthNames = [
-                            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
-                            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
-                        ];
-                        const monthName = monthNames[parseInt(month) - 1];
-                        let html = `
-                    <!-- Header Form -->
-                    <div class="grid grid-cols-3 gap-4 border border-black p-2 mb-2 text-xs">
-                        <div class="flex items-center justify-center">
-                            <img src="{{ asset('public/assets/images/logo/logo-gi-transparant.png') }}" class="h-16">
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <h1 class="text-lg font-bold uppercase text-center">Form Perawatan Kendaraan</h1>
-                        </div>
-                        <div class="text-[10px] border border-black p-1">
-                            <p class="block font-semibold">No. Dok. : FM-GA-023</p>
-                            <p class="block font-semibold">Revisi : 01</p>
-                            <p class="block font-semibold">Tgl. Efektif : 03-09-2024</p>
-                            <p class="block font-semibold">Halaman : 1 dari 1</p>
-                        </div>
-                    </div>
+        const daysInMonth = res.daysInMonth || new Date(year, month, 0).getDate();
+        const monthNames = [
+            'Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni',
+            'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'
+        ];
+        const monthName = monthNames[parseInt(month) - 1];
 
-                    <!-- Data Kendaraan -->
-                    <div class="grid gap-4 mb-4 text-sm border p-3 rounded bg-gray-50">
-                        <div><label class="block font-semibold">Jenis Kendaraan  : ${vehicleInfo?.jenis ?? '-'}</label></div>
-                        <div><label class="block font-semibold">Nomor Polisi : ${vehicleInfo?.no_polisi ?? '-'}</label></div>
-                    </div>
-                    <div><label class="block font-semibold text-right">Bulan : ${monthName} ${year}</label></div>
+        // PENTING: Cari baris "Status" untuk filter
+        // Status menentukan apakah data di tanggal tersebut ditampilkan atau tidak
+        let statusRow = res.tableData.find(row => row.label === 'Status');
+        
+        console.log('Status Row:', statusRow);
 
-                    <!-- Tabel Perawatan -->
-                    <div class="overflow-x-auto">
-                        <table class="border border-black text-xs w-full">
-                            <thead>
-                                <tr class="bg-gray-200">
-                                    <th class="border border-black px-1">No</th>
-                                    <th class="border border-black px-2">Item Kontrol</th>`;
-
-                        for (let d = 1; d <= daysInMonth; d++) {
-                            html += `<th class="border border-black px-1">${d}</th>`;
-                        }
-
-                        html += `</tr></thead><tbody>`;
-
-                        if (res.tableData && res.tableData.length > 0) {
-                            res.tableData.forEach((row, idx) => {
-                                const rowClass = (row.label === 'Status') ? 'bg-custom-200 font-semibold' : '';
-                                html += `<tr class="${rowClass}">
-                            <td class="border border-black px-1">${idx + 1}</td>
-                            <td class="border border-black px-2 text-left">${row.label ?? '-'}</td>`;
-                                for (let d = 1; d <= daysInMonth; d++) {
-                                    let val = (row.days && row.days[d]) ? row.days[d] : '';
-                                    html += `<td class="border border-black text-center ${val === '✖' ? 'bg-red-500 text-white' : ''}">${val}</td>`;
-                                }
-                                html += `</tr>`;
-                            });
-                        }
-
-                        html += `</tbody></table></div>`;
-                        html += `         
-                    <!-- Keterangan -->
-                    <div class="mt-6 flex justify-between text-sm text-gray-700">
-                        <div>
-                            <p><strong>KETERANGAN :</strong></p>
-                            <p>✔ : Baik, Berfungsi, Hidup/Nyala, Bersih</p>
-                            <p>✖ : Tidak Baik, Rusak, Tidak Berfungsi, Tidak Nyala, Kotor</p>
-                        </div>
-
-                        <!-- Kolom Status (kanan) -->
-                        <div class="justify-right">
-                            <p><strong>STATUS :</strong></p>
-                            <p>✔ : Disetujui / Diverifikasi</p>
-                            <p>✖ : Ditolak</p>
-                        </div>
-                    </div>
-                    
-                `;
-                        contentDiv.innerHTML = html;
-                    })
-                    .catch(err => {
-                        console.error('Error fetch:', err);
-                        loadingDiv.classList.add('hidden');
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Failed to load data.',
-                            text: 'An error occurred while retrieving the data! Please try again.',
-                            confirmButtonColor: '#3085d6'
-                        });
-                    });
+        // Tentukan tanggal mana yang memiliki status ✔ (disetujui)
+        // Hanya tanggal dengan status ✔ yang akan ditampilkan datanya
+        let approvedDays = new Set();
+        if (statusRow && statusRow.days) {
+            for (let d = 1; d <= daysInMonth; d++) {
+                // Hanya tambahkan jika statusnya benar-benar ✔ (disetujui/diverifikasi)
+                // Status ✖ (ditolak) atau null/kosong TIDAK akan ditampilkan
+                if (statusRow.days[d] === '✔') {
+                    approvedDays.add(d);
+                    console.log('Tanggal disetujui (approved):', d);
+                }
             }
+        }
+
+        console.log('Semua tanggal yang disetujui:', Array.from(approvedDays));
+
+        let html = `
+        <!-- Header Form -->
+        <div class="grid grid-cols-3 gap-4 border border-black p-2 mb-2 text-xs">
+            <div class="flex items-center justify-center">
+                <img src="{{ asset('public/assets/images/logo/logo-gi-transparant.png') }}" class="h-16">
+            </div>
+            <div class="flex items-center justify-center">
+                <h1 class="text-lg font-bold uppercase text-center">Form Perawatan Kendaraan</h1>
+            </div>
+            <div class="text-[10px] border border-black p-1">
+                <p class="block font-semibold">No. Dok. : FM-GA-023</p>
+                <p class="block font-semibold">Revisi : 01</p>
+                <p class="block font-semibold">Tgl. Efektif : 03-09-2024</p>
+                <p class="block font-semibold">Halaman : 1 dari 1</p>
+            </div>
+        </div>
+        
+        <div><label class="block font-semibold">Jenis Kendaraan  : ${vehicleInfo?.jenis ?? '-'}</label></div>
+        <div><label class="block font-semibold">Nomor Polisi : ${vehicleInfo?.no_polisi ?? '-'}</label></div>
+        </div>
+        <div><label class="block font-semibold text-right">Bulan : ${monthName} ${year}</label></div>
+
+        <!-- Tabel Perawatan -->
+        <div class="overflow-x-auto">
+            <table class="border border-black text-xs w-full">
+                <thead>
+                    <tr class="bg-gray-200">
+                        <th class="border border-black px-1">No</th>
+                        <th class="border border-black px-2">Item Kontrol</th>`;
+
+        // Tampilkan SEMUA header tanggal
+        for (let d = 1; d <= daysInMonth; d++) {
+            html += `<th class="border border-black px-1">${d}</th>`;
+        }
+
+        html += `</tr></thead><tbody>`;
+
+        // Render setiap baris data
+        res.tableData.forEach((row, idx) => {
+            const rowClass = (row.label === 'Status') ? 'bg-custom-200 font-semibold' : '';
+            html += `<tr class="${rowClass}">
+                <td class="border border-black px-1">${idx + 1}</td>
+                <td class="border border-black px-2 text-left">${row.label ?? '-'}</td>`;
+            
+            // Loop untuk setiap tanggal
+            for (let d = 1; d <= daysInMonth; d++) {
+                // CEK: Apakah tanggal ini punya status ✔?
+                let showData = approvedDays.has(d);
+                
+                if (!showData) {
+                    // Jika status BUKAN ✔, tampilkan sel kosong
+                    html += `<td class="border border-black text-center"></td>`;
+                } else {
+                    // Jika status adalah ✔, tampilkan data (baik ✔ maupun ✖)
+                    let val = (row.days && row.days[d]) ? row.days[d] : '';
+                    let bgClass = val === '✖' ? 'bg-red-500 text-white' : '';
+                    html += `<td class="border border-black text-center ${bgClass}">${val}</td>`;
+                }
+            }
+            
+            html += `</tr>`;
+        });
+
+        html += `</tbody></table></div>`;
+        html += `         
+        <!-- Keterangan -->
+        <div class="mt-6 flex justify-between text-sm text-gray-700">
+            <div>
+                <p><strong>KETERANGAN :</strong></p>
+                <p>✔ : Baik, Berfungsi, Hidup/Nyala, Bersih</p>
+                <p>✖ : Tidak Baik, Rusak, Tidak Berfungsi, Tidak Nyala, Kotor</p>
+            </div>
+
+            <!-- Kolom Status (kanan) -->
+            <div class="justify-right">
+                <p><strong>STATUS :</strong></p>
+                <p>✔ : Disetujui / Diverifikasi</p>
+                <p>✖ : Ditolak</p>
+            </div>
+        </div>
+        `;
+        
+        contentDiv.innerHTML = html;
+    })
+    .catch(err => {
+        console.error('Error fetch:', err);
+        loadingDiv.classList.add('hidden');
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed to load data.',
+            text: 'An error occurred while retrieving the data! Please try again.',
+            confirmButtonColor: '#3085d6'
+        });
+    });
+}
         });
     </script>
 

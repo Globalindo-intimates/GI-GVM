@@ -449,7 +449,7 @@
                             <label class="block font-semibold">Form ID : ${vehicles.id ?? '-'}</label>
                         </div>
                         <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Tanggal Perbaikan : ${tanggalFormatted}</label>
+                            <label class="block font-semibold">Status : ${vehicles.status ?? '-'}</label>
                         </div>
                         <div class="flex items-center justify-center">
                             <label class="block font-semibold">Jenis Kendaraan : ${vehicles.jenis ?? '-'}</label>
@@ -461,7 +461,7 @@
                             <label class="block font-semibold">Nama Pelapor : ${vehicles.nama_pelapor ?? '-'}</label>
                         </div>
                         <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Status : ${vehicles.status ?? '-'}</label>
+                            <label class="block font-semibold">Tanggal Perbaikan : ${tanggalFormatted}</label>
                         </div>
                     </div>
                     <div class="overflow-x-auto mb-6">

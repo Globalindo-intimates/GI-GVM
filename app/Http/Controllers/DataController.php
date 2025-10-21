@@ -2,27 +2,14 @@
 
 namespace App\Http\Controllers;
 
-//import model product
 use App\Models\KendaraanModel;
 use App\Models\MasterdataModel;
-
-//import return type View
-use DB;
 use Illuminate\View\View;
-
-//import return type redirectResponse
-use Illuminate\Http\RedirectResponse;
-
-//import Http Request
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DataController extends Controller
 {
-    /**
-     * index
-     *
-     * @return void
-     */
     public function index(): View
     {
         $vehicle = KendaraanModel::latest()->paginate(10);
@@ -32,6 +19,20 @@ class DataController extends Controller
     public function create(): View
     {
         return view('content.dashboard');
+    }
+
+    public function checkExistingData(Request $request)
+    {
+        $tanggal = $request->tanggal;
+        $id_kendaraan = $request->id_kendaraan;
+        
+        $exists = KendaraanModel::where('tanggal', $tanggal)
+                               ->where('id_kendaraan', $id_kendaraan)
+                               ->exists();
+        
+        return response()->json([
+            'exists' => $exists
+        ]);
     }
 
     public function store(Request $request)
@@ -62,54 +63,23 @@ class DataController extends Controller
             'dongkrak' => 'nullable|in:✔,✖',
             'kotak_p3k' => 'nullable|in:✔,✖',
             'segitiga_pengaman' => 'nullable|in:✔,✖',
-            // Validasi untuk gambar kerusakan
-            'oli_mesin_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'oli_power_steering_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'oli_rem_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'body_kendaraan_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'otomatis_starter_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'radiator_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'baterai_aki_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'wipers_depan_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'wipers_belakang_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'ban_depan_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'ban_belakang_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'lampu_depan_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'lampu_belakang_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'lampu_rem_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'klakson_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'kebersihan_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'kunci_roda_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'dongkrak_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'kotak_p3k_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            'segitiga_pengaman_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
-            // Validasi untuk alasan kerusakan
-            'oli_mesin_reason' => 'nullable|string',
-            'oli_power_steering_reason' => 'nullable|string',
-            'oli_rem_reason' => 'nullable|string',
-            'body_kendaraan_reason' => 'nullable|string',
-            'otomatis_starter_reason' => 'nullable|string',
-            'radiator_reason' => 'nullable|string',
-            'baterai_aki_reason' => 'nullable|string',
-            'wipers_depan_reason' => 'nullable|string',
-            'wipers_belakang_reason' => 'nullable|string',
-            'ban_depan_reason' => 'nullable|string',
-            'ban_belakang_reason' => 'nullable|string',
-            'lampu_depan_reason' => 'nullable|string',
-            'lampu_belakang_reason' => 'nullable|string',
-            'lampu_rem_reason' => 'nullable|string',
-            'klakson_reason' => 'nullable|string',
-            'kebersihan_reason' => 'nullable|string',
-            'kunci_roda_reason' => 'nullable|string',
-            'dongkrak_reason' => 'nullable|string',
-            'kotak_p3k_reason' => 'nullable|string',
-            'segitiga_pengaman_reason' => 'nullable|string',
         ]);
+
+        // Cek duplikasi data
+        $existingData = KendaraanModel::where('tanggal', $request->tanggal)
+                                      ->where('id_kendaraan', $request->id_kendaraan)
+                                      ->first();
+        
+        if ($existingData) {
+            return redirect()->back()
+                           ->withInput()
+                           ->with('error', 'Data for this vehicle on the selected date already exists!');
+        }
 
         // Upload gambar kendaraan utama
         $image = $request->file('image');
         $image->storeAs('vehicle', $image->hashName(), 'public');
-        
+
         // Get data kendaraan dari master data
         $vehicle = MasterdataModel::find($request->id_kendaraan, ["no_polisi", "merk", "tahun", "jenis"]);
 
@@ -148,10 +118,10 @@ class DataController extends Controller
 
         // Array field yang mungkin memiliki gambar kerusakan
         $damageImageFields = [
-            'oli_mesin', 'oli_power_steering', 'oli_rem', 'body_kendaraan', 
-            'otomatis_starter', 'radiator', 'baterai_aki', 'wipers_depan', 
-            'wipers_belakang', 'ban_depan', 'ban_belakang', 'lampu_depan', 
-            'lampu_belakang', 'lampu_rem', 'klakson', 'kebersihan', 
+            'oli_mesin', 'oli_power_steering', 'oli_rem', 'body_kendaraan',
+            'otomatis_starter', 'radiator', 'baterai_aki', 'wipers_depan',
+            'wipers_belakang', 'ban_depan', 'ban_belakang', 'lampu_depan',
+            'lampu_belakang', 'lampu_rem', 'klakson', 'kebersihan',
             'kunci_roda', 'dongkrak', 'kotak_p3k', 'segitiga_pengaman'
         ];
 
@@ -159,14 +129,13 @@ class DataController extends Controller
         foreach ($damageImageFields as $field) {
             $imageFieldName = $field . '_image';
             $reasonFieldName = $field . '_reason';
-            
+
             if ($request->hasFile($imageFieldName)) {
                 $damageImage = $request->file($imageFieldName);
                 $damageImage->storeAs('damages', $damageImage->hashName(), 'public');
                 $data[$imageFieldName] = $damageImage->hashName();
             }
-            
-            // Simpan alasan kerusakan jika ada
+
             if ($request->has($reasonFieldName)) {
                 $data[$reasonFieldName] = $request->input($reasonFieldName);
             }
@@ -177,4 +146,5 @@ class DataController extends Controller
 
         return redirect()->route('content.kendaraan')->with('success', 'Vehicle data saved successfully!');
     }
+    
 }

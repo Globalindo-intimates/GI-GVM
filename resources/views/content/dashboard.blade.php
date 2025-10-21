@@ -30,7 +30,7 @@
                 <div class="absolute top-0 left-0 w-1.5 bg-green-500 h-full rounded-l-3xl"></div>
                 <div class="flex flex-col items-center text-center space-y-2">
                     <div class="text-4xl font-bold text-green-600">{{ $vehicles->where('status', '✔' )->count() }}</div>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Approved ✔</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">Approved</p>
                 </div>
             </div>
 
@@ -47,7 +47,7 @@
                 <div class="absolute top-0 left-0 w-1.5 bg-red-500 h-full rounded-l-3xl"></div>
                 <div class="flex flex-col items-center text-center space-y-2">
                     <div class="text-4xl font-bold text-red-600">{{$vehicles->where('status', '✖')->count() }}</div>
-                    <p class="text-sm text-gray-500 dark:text-gray-300">Rejected ✖</p>
+                    <p class="text-sm text-gray-500 dark:text-gray-300">Rejected</p>
                 </div>
             </div>
         </div>
