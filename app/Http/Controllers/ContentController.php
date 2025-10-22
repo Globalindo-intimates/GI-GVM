@@ -15,7 +15,7 @@ class ContentController extends Controller
     public function dashboard()
     {
         $data = [
-            'title' => 'Data Perawatan Kendaraan | GI-GVM',
+            'title' => 'Dashbaord | GI-GVM',
             'menu' => 'Content',
             'sub_menu' => 'Dashboard',
             'vehicles' => KendaraanModel::where('user_id', session('user.id'))->paginate(10)
@@ -60,7 +60,7 @@ class ContentController extends Controller
         $tahun = KendaraanModel::selectRaw('YEAR(MAX(tanggal)) as tahun')->value('tahun') ?? date('Y');
 
         $data = [
-            'title' => 'Data Perawatan Kendaraan | GI-GVM',
+            'title' => 'Dashboard General Affair | GI-GVM',
             'menu' => 'Content',
             'sub_menu' => 'Dashboard',
             'kendaraan' => MasterdataModel::latest()->paginate(10),
@@ -120,7 +120,7 @@ class ContentController extends Controller
         $tahun = KendaraanModel::selectRaw('YEAR(MAX(tanggal)) as tahun')->value('tahun') ?? date('Y');
 
         $data = [
-            'title' => 'Admin Dashboard | GI-GVM',
+            'title' => ' Dashboard Admin | GI-GVM',
             'menu' => 'Content',
             'sub_menu' => 'Dashboard',
             'kendaraan' => MasterdataModel::latest()->paginate(10),
@@ -150,7 +150,7 @@ class ContentController extends Controller
         $vehicles = KendaraanModel::where('user_id', $id)->paginate(10);
 
         $data = [
-            'title' => 'Cek Input Data | GI-GVM',
+            'title' => 'Check Input Data | GI-GVM',
             'menu' => 'Content',
             'sub_menu' => 'Dashboard',
             'vehicles' => $vehicles
@@ -162,7 +162,7 @@ class ContentController extends Controller
     public function dataperawatan(): View
     {
         $data = [
-            'title' => 'Data Perawatan Kendaraan | GI-GVM',
+            'title' => 'Maintenance Report | GI-GVM',
             'menu' => 'Content',
             'sub_menu' => 'Dashboard',
             'vehicles' => KendaraanModel::latest()->get()
@@ -175,7 +175,7 @@ class ContentController extends Controller
     public function infodata(): View
     {
         $data = [
-            'title' => 'Data Perawatan Kendaraan | GI-GVM',
+            'title' => 'Detail Data | GI-GVM',
             'menu' => 'Content',
             'sub_menu' => 'Dashboard',
             'kendaraan' => MasterdataModel::latest()->paginate(10),
