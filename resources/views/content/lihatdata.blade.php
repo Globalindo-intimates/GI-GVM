@@ -316,7 +316,7 @@
                 const vehicleId = btn.dataset.id;
                 
                 // Set form action
-                editForm.action = `/kendaraan/update/${vehicleId}`;
+                editForm.action = `{{ url('/kendaraan/update/${vehicleId}') }}`;
                 
                 // Fill basic data
                 document.getElementById('edit-id').value = vehicleId;
