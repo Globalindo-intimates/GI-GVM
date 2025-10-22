@@ -18,7 +18,6 @@
                 </button>
             </div>
 
-            <!-- Tabel Belum Diverifikasi (Unverified) -->
             <div id="table-pending">
                 <div class="card-body">
                     <h5 class="mb-4 text-20">Unverified Vehicle List</h5>
@@ -90,7 +89,6 @@
                 </div>
             </div>
 
-            <!-- Tabel Update Request -->
             <div id="table-update" class="hidden">
                 <div class="card-body">
                     <h5 class="mb-4 text-20">Update Request Vehicle List</h5>
@@ -113,133 +111,132 @@
                         <tbody>
                             @foreach($vehicles as $item)
                                 @if($item->is_updated && (empty($item->status) || empty($item->pemeriksa)))
-                                    <tr
-                                        class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-yellow-50 transition-colors text-center">
-                                        <td class="border px-2 py-1 text-center">
-                                            @if($item->image)
-                                                <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
-                                                    class="w-16 h-12 object-cover rounded">
-                                            @else
-                                                <span class="text-gray-400 italic">No Image</span>
-                                            @endif
-                                        </td>
-                                        <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
-                                        <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
-                                        <td class="border px-2 py-1">{{ $item->merk }}</td>
-                                        <td class="border px-2 py-1">{{ $item->tahun }}</td>
-                                        <td class="border px-2 py-1">{{ $item->jenis }}</td>
-                                        <td class="border px-2 py-1">{{ $item->tanggal }}</td>
-                                        <td class="border px-2 py-1 text-center align-middle">
-                                                <button type="button"
-                                                    class="verify-btn px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
-                                                    data-id="{{ $item->id }}">
-                                                    Re-Verify
-                                                </button>
-                                            </div>
-                                        </td>
-                                        <td class="border px-2 py-1 text-center">
-                                            <button
-                                                class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
-                                                data-vehicles='@json($item)'
-                                                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
-                                                View Detailed Data
+                                                <tr
+                                                    class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-yellow-50 transition-colors text-center">
+                                                    <td class="border px-2 py-1 text-center">
+                                                        @if($item->image)
+                                                            <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
+                                                                class="w-16 h-12 object-cover rounded">
+                                                        @else
+                                                            <span class="text-gray-400 italic">No Image</span>
+                                                        @endif
+                                                    </td>
+                                                    <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
+                                                    <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
+                                                    <td class="border px-2 py-1">{{ $item->merk }}</td>
+                                                    <td class="border px-2 py-1">{{ $item->tahun }}</td>
+                                                    <td class="border px-2 py-1">{{ $item->jenis }}</td>
+                                                    <td class="border px-2 py-1">{{ $item->tanggal }}</td>
+                                                    <td class="border px-2 py-1 text-center align-middle">
+                                                        <button type="button"
+                                                            class="verify-btn px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                                                            data-id="{{ $item->id }}">
+                                                            Re-Verify
+                                                        </button>
+                                    </div>
+                                    </td>
+                                    <td class="border px-2 py-1 text-center">
+                                        <button
+                                            class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
+                                            data-vehicles='@json($item)'
+                                            data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
+                                            View Detailed Data
+                                        </button>
+                                    </td>
+                                    <td class="border px-2 py-1 text-center">
+                                        <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
+                                                Delete
                                             </button>
-                                        </td>
-                                        <td class="border px-2 py-1 text-center">
-                                            <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button"
-                                                    class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
+                                        </form>
+                                    </td>
                                     </tr>
                                 @endif
                             @endforeach
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-            <!-- Tabel Sudah Diverifikasi (Verified) -->
-            <div id="table-verified" class="hidden">
-                <div class="card-body">
-                    <h5 class="mb-4 text-20">Verified Vehicle List</h5>
-                    <table class="table-auto w-full border-collapse border border-custom-300 text-sm"
-                        id="table-verified-data">
-                        <thead class="bg-custom-200">
-                            <tr>
-                                <th class="border px-2 py-1 text-center">Photo</th>
-                                <th class="border px-2 py-1 text-center">Report By</th>
-                                <th class="border px-2 py-1 text-center">License Plate Number</th>
-                                <th class="border px-2 py-1 text-center">Vehicle Brand</th>
-                                <th class="border px-2 py-1 text-center">Year of Vehicle</th>
-                                <th class="border px-2 py-1 text-center">Type of Vehicle</th>
-                                <th class="border px-2 py-1 text-center">Repair Date</th>
-                                <th class="border px-2 py-1 text-center">Status</th>
-                                <th class="border px-2 py-1 text-center">Inspector</th>
-                                <th class="border px-2 py-1 text-center">Reject Reason</th>
-                                <th class="border px-2 py-1 text-center">Action</th>
-                                <th class="border px-2 py-1 text-center">Delete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach($vehicles as $item)
-                                @if(!empty($item->status) && !empty($item->pemeriksa))
-                                    <tr
-                                        class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors text-center">
-                                        <td class="border px-2 py-1 text-center">
-                                            @if($item->image)
-                                                <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
-                                                    class="w-16 h-12 object-cover rounded">
-                                            @else
-                                                <span class="text-gray-400 italic">No Image</span>
-                                            @endif
-                                        </td>
-                                        <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
-                                        <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
-                                        <td class="border px-2 py-1">{{ $item->merk }}</td>
-                                        <td class="border px-2 py-1">{{ $item->tahun }}</td>
-                                        <td class="border px-2 py-1">{{ $item->jenis }}</td>
-                                        <td class="border px-2 py-1">{{ $item->tanggal }}</td>
-                                        <td class="border px-2 py-1">
-                                            <span
-                                                class="text-lg font-bold {{ $item->status === '✔' ? 'text-green-600' : 'text-red-600' }}">
-                                                {{ $item->status }}
-                                            </span>
-                                        </td>
-                                        <td class="border px-2 py-1">{{ $item->pemeriksa }}</td>
-                                        <td class="border px-2 py-1">
-                                            {{ $item->status === '✖' && $item->reject_reason ? $item->reject_reason : '-' }}
-                                        </td>
-                                        <td class="border px-2 py-1 text-center">
-                                            <button
-                                                class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
-                                                data-vehicles='@json($item)'
-                                                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
-                                                View Detailed Data
-                                            </button>
-                                        </td>
-                                        <td class="border px-2 py-1 text-center">
-                                            <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button"
-                                                    class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
-                                                    Delete
-                                                </button>
-                                            </form>
-                                        </td>
-                                    </tr>
-                                @endif
-                            @endforeach
-                        </tbody>
-                    </table>
-                </div>
+                    </tbody>
+                </table>
             </div>
         </div>
+
+        <!-- Tabel Sudah Diverifikasi (Verified) -->
+        <div id="table-verified" class="hidden">
+            <div class="card-body">
+                <h5 class="mb-4 text-20">Verified Vehicle List</h5>
+                <table class="table-auto w-full border-collapse border border-custom-300 text-sm" id="table-verified-data">
+                    <thead class="bg-custom-200">
+                        <tr>
+                            <th class="border px-2 py-1 text-center">Photo</th>
+                            <th class="border px-2 py-1 text-center">Report By</th>
+                            <th class="border px-2 py-1 text-center">License Plate Number</th>
+                            <th class="border px-2 py-1 text-center">Vehicle Brand</th>
+                            <th class="border px-2 py-1 text-center">Year of Vehicle</th>
+                            <th class="border px-2 py-1 text-center">Type of Vehicle</th>
+                            <th class="border px-2 py-1 text-center">Repair Date</th>
+                            <th class="border px-2 py-1 text-center">Status</th>
+                            <th class="border px-2 py-1 text-center">Inspector</th>
+                            <th class="border px-2 py-1 text-center">Reject Reason</th>
+                            <th class="border px-2 py-1 text-center">Action</th>
+                            <th class="border px-2 py-1 text-center">Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($vehicles as $item)
+                            @if(!empty($item->status) && !empty($item->pemeriksa))
+                                <tr
+                                    class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors text-center">
+                                    <td class="border px-2 py-1 text-center">
+                                        @if($item->image)
+                                            <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
+                                                class="w-16 h-12 object-cover rounded">
+                                        @else
+                                            <span class="text-gray-400 italic">No Image</span>
+                                        @endif
+                                    </td>
+                                    <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
+                                    <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
+                                    <td class="border px-2 py-1">{{ $item->merk }}</td>
+                                    <td class="border px-2 py-1">{{ $item->tahun }}</td>
+                                    <td class="border px-2 py-1">{{ $item->jenis }}</td>
+                                    <td class="border px-2 py-1">{{ $item->tanggal }}</td>
+                                    <td class="border px-2 py-1">
+                                        <span
+                                            class="text-lg font-bold {{ $item->status === '✔' ? 'text-green-600' : 'text-red-600' }}">
+                                            {{ $item->status }}
+                                        </span>
+                                    </td>
+                                    <td class="border px-2 py-1">{{ $item->pemeriksa }}</td>
+                                    <td class="border px-2 py-1">
+                                        {{ $item->status === '✖' && $item->reject_reason ? $item->reject_reason : '-' }}
+                                    </td>
+                                    <td class="border px-2 py-1 text-center">
+                                        <button
+                                            class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
+                                            data-vehicles='@json($item)'
+                                            data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
+                                            View Detailed Data
+                                        </button>
+                                    </td>
+                                    <td class="border px-2 py-1 text-center">
+                                        <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="button"
+                                                class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
+                                                Delete
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
     </div>
 
     <!-- Modal Verifikasi -->
@@ -374,7 +371,7 @@
         document.querySelectorAll('.verify-btn').forEach(btn => {
             btn.addEventListener('click', function () {
                 let vehicleId = this.dataset.id;
-                verificationForm.action = `/${vehicleId}/status`;
+                verificationForm.action = `{{ url('${vehicleId}/status') }}`;
                 verificationModal.classList.remove('hidden');
             });
         });
@@ -407,92 +404,89 @@
             }
         });
 
-        // Handle form submission
-        // Handle form submission with improved error handling
-verificationForm.addEventListener('submit', function (e) {
-    e.preventDefault();
+        verificationForm.addEventListener('submit', function (e) {
+            e.preventDefault();
 
-    const statusValue = statusSelect.value;
-    const rejectReasonValue = rejectReasonTextarea.value.trim();
+            const statusValue = statusSelect.value;
+            const rejectReasonValue = rejectReasonTextarea.value.trim();
 
-    if (!statusValue) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Status is required!',
-            text: 'You need to select a status first!'
+            if (!statusValue) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Status is required!',
+                    text: 'You need to select a status first!'
+                });
+                return;
+            }
+
+            if (statusValue === '✖' && !rejectReasonValue) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Please provide a reason!',
+                    text: 'Rejection reason must be provided for rejected status!'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Please wait...',
+                text: 'Processing verification...',
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                }
+            });
+
+            const formData = new FormData(this);
+
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest',
+                    'Accept': 'application/json'
+                }
+            })
+                .then(async res => {
+                    // Check content type before parsing
+                    const contentType = res.headers.get('content-type');
+
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const textResponse = await res.text();
+                        console.error('Server returned non-JSON response:', textResponse.substring(0, 500));
+                        throw new Error('Server error: Expected JSON response but received HTML. Check server logs.');
+                    }
+
+                    const data = await res.json();
+
+                    if (!res.ok) {
+                        console.error('Server Response:', data);
+                        throw new Error(data.message || `Server error: ${res.status} ${res.statusText}`);
+                    }
+
+                    return data;
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Data verified successfully!',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        text: err.message || 'An error occurred while updating the data.',
+                        footer: 'Please check browser console for error details'
+                    });
+                });
         });
-        return;
-    }
-
-    if (statusValue === '✖' && !rejectReasonValue) {
-        Swal.fire({
-            icon: 'warning',
-            title: 'Please provide a reason!',
-            text: 'Rejection reason must be provided for rejected status!'
-        });
-        return;
-    }
-
-    Swal.fire({
-        title: 'Please wait...',
-        text: 'Processing verification...',
-        allowOutsideClick: false,
-        allowEscapeKey: false,
-        didOpen: () => {
-            Swal.showLoading();
-        }
-    });
-
-    const formData = new FormData(this);
-
-    fetch(this.action, {
-        method: 'POST',
-        body: formData,
-        headers: {
-            'X-Requested-With': 'XMLHttpRequest',
-            'Accept': 'application/json'
-        }
-    })
-    .then(async res => {
-        // Check content type before parsing
-        const contentType = res.headers.get('content-type');
-        
-        if (!contentType || !contentType.includes('application/json')) {
-            // Server returned HTML instead of JSON (likely an error page)
-            const textResponse = await res.text();
-            console.error('Server returned non-JSON response:', textResponse.substring(0, 500));
-            throw new Error('Server error: Expected JSON response but received HTML. Check server logs.');
-        }
-
-        const data = await res.json();
-        
-        if (!res.ok) {
-            console.error('Server Response:', data);
-            throw new Error(data.message || `Server error: ${res.status} ${res.statusText}`);
-        }
-        
-        return data;
-    })
-    .then(data => {
-        Swal.fire({
-            icon: 'success',
-            title: 'Success!',
-            text: 'Data verified successfully!',
-            confirmButtonColor: '#3085d6'
-        }).then(() => {
-            location.reload();
-        });
-    })
-    .catch(err => {
-        console.error('Error:', err);
-        Swal.fire({
-            icon: 'error',
-            title: 'Failed!',
-            text: err.message || 'An error occurred while updating the data.',
-            footer: 'Please check browser console for error details'
-        });
-    });
-});
 
         // Delete confirmation
         document.querySelectorAll('.delete-btn').forEach(btn => {
@@ -552,39 +546,39 @@ verificationForm.addEventListener('submit', function (e) {
                 const assetUrl = '{{ asset("storage/app/public/damages/") }}';
 
                 let html = `
-                    <div class="grid grid-cols-2 gap-4 mb-4 text-sm rounded bg-gray-50 text-center">
-                        <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Form ID : ${vehicles.id ?? '-'}</label>
+                        <div class="grid grid-cols-2 gap-4 mb-4 text-sm rounded bg-gray-50 text-center">
+                            <div class="flex items-center justify-center">
+                                <label class="block font-semibold">Form ID : ${vehicles.id ?? '-'}</label>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <label class="block font-semibold">Status : ${vehicles.status ?? '-'}</label>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <label class="block font-semibold">Jenis Kendaraan : ${vehicles.jenis ?? '-'}</label>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <label class="block font-semibold">Nomor Polisi : ${vehicles.no_polisi ?? '-'}</label>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <label class="block font-semibold">Nama Pelapor : ${vehicles.nama_pelapor ?? '-'}</label>
+                            </div>
+                            <div class="flex items-center justify-center">
+                                <label class="block font-semibold">Tanggal Perbaikan : ${tanggalFormatted}</label>
+                            </div>
                         </div>
-                        <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Status : ${vehicles.status ?? '-'}</label>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Jenis Kendaraan : ${vehicles.jenis ?? '-'}</label>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Nomor Polisi : ${vehicles.no_polisi ?? '-'}</label>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Nama Pelapor : ${vehicles.nama_pelapor ?? '-'}</label>
-                        </div>
-                        <div class="flex items-center justify-center">
-                            <label class="block font-semibold">Tanggal Perbaikan : ${tanggalFormatted}</label>
-                        </div>
-                    </div>
-                    <div class="overflow-x-auto mb-6">
-                        <table class="table-auto border-collapse border border-gray-400 text-xs w-full text-center">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th class="border border-gray-400 px-2 py-1">No</th>
-                                    <th class="border border-gray-400 px-2 py-1">Item Kontrol</th>
-                                    <th class="border border-gray-400 px-2 py-1">Status</th>
-                                    <th class="border border-gray-400 px-2 py-1">Reason</th>
-                                    <th class="border border-gray-400 px-2 py-1">Foto Kerusakan</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                `;
+                        <div class="overflow-x-auto mb-6">
+                            <table class="table-auto border-collapse border border-gray-400 text-xs w-full text-center">
+                                <thead class="bg-gray-100">
+                                    <tr>
+                                        <th class="border border-gray-400 px-2 py-1">No</th>
+                                        <th class="border border-gray-400 px-2 py-1">Item Kontrol</th>
+                                        <th class="border border-gray-400 px-2 py-1">Status</th>
+                                        <th class="border border-gray-400 px-2 py-1">Reason</th>
+                                        <th class="border border-gray-400 px-2 py-1">Foto Kerusakan</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                    `;
 
                 Object.entries(keyMapping).forEach(([displayName, map], idx) => {
                     const status = vehicles[map.key] ?? '-';
@@ -592,28 +586,28 @@ verificationForm.addEventListener('submit', function (e) {
                     const imagePath = vehicles[map.image] ?? '';
                     const imgUrl = imagePath ? `${assetUrl}/${imagePath}` : '';
                     html += `
-                        <tr>
-                            <td class="border border-gray-400 px-2 py-1 text-center">${idx + 1}</td>
-                            <td class="border border-gray-400 px-2 py-1 text-left">${displayName}</td>
-                            <td class="border border-gray-400 px-2 py-1">${status}</td>
-                            <td class="border border-gray-400 px-2 py-1 text-center">
-                                ${status === '✖' && reason ? `<span>${reason}</span>` : '-'}
-                            </td>
-                            <td class="border border-gray-400 px-2 py-1">
-                                ${status === '✖' && imagePath ? `<img src="${imgUrl}" class="w-32 h-24 object-cover rounded border mx-auto">` : '-'}
-                            </td>
-                        </tr>
-                    `;
+                            <tr>
+                                <td class="border border-gray-400 px-2 py-1 text-center">${idx + 1}</td>
+                                <td class="border border-gray-400 px-2 py-1 text-left">${displayName}</td>
+                                <td class="border border-gray-400 px-2 py-1">${status}</td>
+                                <td class="border border-gray-400 px-2 py-1 text-center">
+                                    ${status === '✖' && reason ? `<span>${reason}</span>` : '-'}
+                                </td>
+                                <td class="border border-gray-400 px-2 py-1">
+                                    ${status === '✖' && imagePath ? `<img src="${imgUrl}" class="w-32 h-24 object-cover rounded border mx-auto">` : '-'}
+                                </td>
+                            </tr>
+                        `;
                 });
 
                 html += `
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="flex items-center justify-left">
-                        <label class="block font-semibold">Pemeriksa : ${vehicles.pemeriksa ?? '-'}</label>
-                    </div>
-                `;
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="flex items-center justify-left">
+                            <label class="block font-semibold">Pemeriksa : ${vehicles.pemeriksa ?? '-'}</label>
+                        </div>
+                    `;
 
                 contentDiv.innerHTML = html;
                 detailDiv.classList.remove('hidden');
