@@ -28,6 +28,7 @@ class KendaraanModel extends Model
         'tanggal',
         'status',
         'pemeriksa',
+        'is_updated',
         'reject_reason',
         'oli_mesin',
         'oli_mesin_image',

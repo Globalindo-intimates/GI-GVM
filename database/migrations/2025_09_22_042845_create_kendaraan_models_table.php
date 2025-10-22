@@ -23,6 +23,7 @@ return new class extends Migration {
             $table->date('tanggal');
             $table->enum('status', allowed: ['✔', '✖'])->nullable();
             $table->text('reject_reason')->nullable()->after('status');
+            $table->boolean('is_updated')->default(false)->after('reject_reason');
             $table->string('pemeriksa');
             $table->enum('oli_mesin', ['✔', '✖'])->nullable();
             $table->enum('oli_power_steering', ['✔', '✖'])->nullable();
@@ -95,6 +96,7 @@ return new class extends Migration {
     {
         Schema::table('kendaraan_models', function (Blueprint $table) {
             $table->dropColumn([
+                'is_updated',
                 'oli_mesin_image',
                 'oli_power_steering_image',
                 'oli_rem_image',
@@ -135,6 +137,7 @@ return new class extends Migration {
                 'dongkrak_reason',
                 'kotak_p3k_reason',
                 'segitiga_pengaman_reason',
+                
             ]);
         });
     }

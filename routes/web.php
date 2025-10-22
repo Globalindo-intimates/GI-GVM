@@ -40,6 +40,9 @@ Route::get('/dashboard', [\App\Http\Controllers\ContentController::class, 'dashb
 Route::get('/kendaraan', [\App\Http\Controllers\ContentController::class, 'dashboardkendaraan'])->name('content.kendaraan');
 Route::post('/simpan', [\App\Http\Controllers\DataController::Class, 'store'])->name('data.store');
 Route::get('/check-existing-data', [\App\Http\Controllers\DataController::class, 'checkExistingData']);
+Route::put('/kendaraan/update/{id}', [\App\Http\Controllers\DataController::class, 'update'])->name('data.update');
+Route::put('/{id}/status', [\App\Http\Controllers\DataController::class, 'status'])->name('data.status');
+Route::get('/verification', [\App\Http\Controllers\DataController::class, 'verification'])->name('data.verification');
 
 
 //LihatData

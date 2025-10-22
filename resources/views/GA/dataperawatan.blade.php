@@ -1,159 +1,245 @@
 @extends('content.app')
 @section('content')
-<div class="card mt-3">
-    <div class="card-body container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
+    <div class="card mt-3">
+        <div class="card-body container-fluid group-data-[content=boxed]:max-w-boxed mx-auto">
+            <!-- Tab Buttons -->
+            <div class="mb-4 flex gap-2">
                 <button id="tab-pending"
                     class="px-6 py-2 border-collapse border bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
                     Unverified
                 </button>
+                <button id="tab-update"
+                    class="px-6 py-2 border-collapse border bg-gray-300 text-gray-700 rounded transition-colors">
+                    Update Request
+                </button>
                 <button id="tab-verified"
-                    class="px-6 py-2 border-collapse border bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors">
+                    class="px-6 py-2 border-collapse border bg-gray-300 text-gray-700 rounded transition-colors">
                     Verified
                 </button>
-    <!-- Tabel Belum Diverifikasi -->
-    <div id="table-pending">
-        <div class="card-body">
-            <h5 class="mb-4 text-20">Unverified Vehicle List</h5>
-            <table class="table-auto w-full border-collapse border border-custom-300 text-sm" id="table-pending-data">
-                <thead class="bg-custom-200">
-                    <tr>
-                        <th class="border px-2 py-1 text-center">Photo</th>
-                        <th class="border px-2 py-1 text-center">Report By</th>
-                        <th class="border px-2 py-1 text-center">License Plate Number</th>
-                        <th class="border px-2 py-1 text-center">Vehicle Brand</th>
-                        <th class="border px-2 py-1 text-center">Year of Vehicle</th>
-                        <th class="border px-2 py-1 text-center">Type of Vehicle</th>
-                        <th class="border px-2 py-1 text-center">Repair Date</th>
-                        <th class="border px-2 py-1 text-center">Status</th>
-                        <th class="border px-2 py-1 text-center">Action</th>
-                        <th class="border px-2 py-1 text-center">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($vehicles as $item)
-                        @if(empty($item->status) || empty($item->pemeriksa))
-                            <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors text-center">
-                                <td class="border px-2 py-1 text-center">
-                                    @if($item->image)
-                                        <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
-                                            class="w-16 h-12 object-cover rounded">
-                                    @else
-                                        <span class="text-gray-400 italic">No Image</span>
-                                    @endif
-                                </td>
-                                <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
-                                <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
-                                <td class="border px-2 py-1">{{ $item->merk }}</td>
-                                <td class="border px-2 py-1">{{ $item->tahun }}</td>
-                                <td class="border px-2 py-1">{{ $item->jenis }}</td>
-                                <td class="border px-2 py-1">{{ $item->tanggal }}</td>
-                                <td class="border px-2 py-1 text-center">
-                                    <button type="button"
-                                        class="verify-btn px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
-                                        data-id="{{ $item->id }}">
-                                        Verify
-                                    </button>
-                                </td>
-                                <td class="border px-2 py-1 text-center">
-                                    <button
-                                        class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
-                                        data-vehicles='@json($item)'
-                                        data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
-                                        View Detailed Data
-                                    </button>
-                                </td>
-                                <td class="border px-2 py-1 text-center">
-                                    <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                            class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
-                            </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    </div>
+            </div>
 
-    <!-- Tabel Sudah Diverifikasi -->
-    <div id="table-verified" class=" hidden">
-        <div class="card-body">
-            <h5 class="mb-4 text-20">Verified Vehicle List</h5>
-            <table class="table-auto w-full border-collapse border border-custom-300 text-sm" id="table-verified-data">
-                <thead class="bg-custom-200">
-                    <tr>
-                        <th class="border px-2 py-1 text-center">Photo</th>
-                        <th class="border px-2 py-1 text-center">Report By</th>
-                        <th class="border px-2 py-1 text-center">License Plate Number</th>
-                        <th class="border px-2 py-1 text-center">Vehicle Brand</th>
-                        <th class="border px-2 py-1 text-center">Year of Vehicle</th>
-                        <th class="border px-2 py-1 text-center">Type of Vehicle</th>
-                        <th class="border px-2 py-1 text-center">Repair Date</th>
-                        <th class="border px-2 py-1 text-center">Status</th>
-                        <th class="border px-2 py-1 text-center">Inspector</th>
-                        <th class="border px-2 py-1 text-center">Reject Reason</th>
-                        <th class="border px-2 py-1 text-center">Action</th>
-                        <th class="border px-2 py-1 text-center">Delete</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($vehicles as $item)
-                        @if(!empty($item->status))
-                            <tr class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors text-center">
-                                <td class="border px-2 py-1 text-center">
-                                    @if($item->image)
-                                        <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
-                                            class="w-16 h-12 object-cover rounded">
-                                    @else
-                                        <span class="text-gray-400 italic">No Image</span>
-                                    @endif
-                                </td>
-                                <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
-                                <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
-                                <td class="border px-2 py-1">{{ $item->merk }}</td>
-                                <td class="border px-2 py-1">{{ $item->tahun }}</td>
-                                <td class="border px-2 py-1">{{ $item->jenis }}</td>
-                                <td class="border px-2 py-1">{{ $item->tanggal }}</td>
-                                <td class="border px-2 py-1">
-                                    <span class="text-lg font-bold {{ $item->status === '✔' ? 'text-green-600' : 'text-red-600' }}">
-                                        {{ $item->status }}
-                                    </span>
-                                </td>
-                                <td class="border px-2 py-1">{{ $item->pemeriksa }}</td>
-                                <td class="border px-2 py-1">
-                                    {{ $item->status === '✖' && $item->reject_reason ? $item->reject_reason : '-' }}
-                                </td>
-                                <td class="border px-2 py-1 text-center">
-                                    <button
-                                        class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
-                                        data-vehicles='@json($item)'
-                                        data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
-                                        View Detailed Data
-                                    </button>
-                                </td>
-                                <td class="border px-2 py-1 text-center">
-                                    <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="button"
-                                            class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
-                                            Delete
-                                        </button>
-                                    </form>
-                                </td>
+            <!-- Tabel Belum Diverifikasi (Unverified) -->
+            <div id="table-pending">
+                <div class="card-body">
+                    <h5 class="mb-4 text-20">Unverified Vehicle List</h5>
+                    <table class="table-auto w-full border-collapse border border-custom-300 text-sm"
+                        id="table-pending-data">
+                        <thead class="bg-custom-200">
+                            <tr>
+                                <th class="border px-2 py-1 text-center">Photo</th>
+                                <th class="border px-2 py-1 text-center">Report By</th>
+                                <th class="border px-2 py-1 text-center">License Plate Number</th>
+                                <th class="border px-2 py-1 text-center">Vehicle Brand</th>
+                                <th class="border px-2 py-1 text-center">Year of Vehicle</th>
+                                <th class="border px-2 py-1 text-center">Type of Vehicle</th>
+                                <th class="border px-2 py-1 text-center">Repair Date</th>
+                                <th class="border px-2 py-1 text-center">Status</th>
+                                <th class="border px-2 py-1 text-center">Action</th>
+                                <th class="border px-2 py-1 text-center">Delete</th>
                             </tr>
-                        @endif
-                    @endforeach
-                </tbody>
-            </table>
+                        </thead>
+                        <tbody>
+                            @foreach($vehicles as $item)
+                                @if((empty($item->status) || empty($item->pemeriksa)) && !$item->is_updated)
+                                    <tr
+                                        class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors text-center">
+                                        <td class="border px-2 py-1 text-center">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
+                                                    class="w-16 h-12 object-cover rounded">
+                                            @else
+                                                <span class="text-gray-400 italic">No Image</span>
+                                            @endif
+                                        </td>
+                                        <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
+                                        <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
+                                        <td class="border px-2 py-1">{{ $item->merk }}</td>
+                                        <td class="border px-2 py-1">{{ $item->tahun }}</td>
+                                        <td class="border px-2 py-1">{{ $item->jenis }}</td>
+                                        <td class="border px-2 py-1">{{ $item->tanggal }}</td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <button type="button"
+                                                class="verify-btn px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                                                data-id="{{ $item->id }}">
+                                                Verify
+                                            </button>
+                                        </td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <button
+                                                class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
+                                                data-vehicles='@json($item)'
+                                                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
+                                                View Detailed Data
+                                            </button>
+                                        </td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tabel Update Request -->
+            <div id="table-update" class="hidden">
+                <div class="card-body">
+                    <h5 class="mb-4 text-20">Update Request Vehicle List</h5>
+                    <table class="table-auto w-full border-collapse border border-custom-300 text-sm"
+                        id="table-update-data">
+                        <thead class="bg-custom-200">
+                            <tr>
+                                <th class="border px-2 py-1 text-center">Photo</th>
+                                <th class="border px-2 py-1 text-center">Report By</th>
+                                <th class="border px-2 py-1 text-center">License Plate Number</th>
+                                <th class="border px-2 py-1 text-center">Vehicle Brand</th>
+                                <th class="border px-2 py-1 text-center">Year of Vehicle</th>
+                                <th class="border px-2 py-1 text-center">Type of Vehicle</th>
+                                <th class="border px-2 py-1 text-center">Repair Date</th>
+                                <th class="border px-2 py-1 text-center">Update Request</th>
+                                <th class="border px-2 py-1 text-center">Action</th>
+                                <th class="border px-2 py-1 text-center">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($vehicles as $item)
+                                @if($item->is_updated && (empty($item->status) || empty($item->pemeriksa)))
+                                    <tr
+                                        class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-yellow-50 transition-colors text-center">
+                                        <td class="border px-2 py-1 text-center">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
+                                                    class="w-16 h-12 object-cover rounded">
+                                            @else
+                                                <span class="text-gray-400 italic">No Image</span>
+                                            @endif
+                                        </td>
+                                        <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
+                                        <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
+                                        <td class="border px-2 py-1">{{ $item->merk }}</td>
+                                        <td class="border px-2 py-1">{{ $item->tahun }}</td>
+                                        <td class="border px-2 py-1">{{ $item->jenis }}</td>
+                                        <td class="border px-2 py-1">{{ $item->tanggal }}</td>
+                                        <td class="border px-2 py-1 text-center align-middle">
+                                                <button type="button"
+                                                    class="verify-btn px-2 py-1 bg-green-500 hover:bg-green-600 text-white rounded transition-colors"
+                                                    data-id="{{ $item->id }}">
+                                                    Re-Verify
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <button
+                                                class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
+                                                data-vehicles='@json($item)'
+                                                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
+                                                View Detailed Data
+                                            </button>
+                                        </td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Tabel Sudah Diverifikasi (Verified) -->
+            <div id="table-verified" class="hidden">
+                <div class="card-body">
+                    <h5 class="mb-4 text-20">Verified Vehicle List</h5>
+                    <table class="table-auto w-full border-collapse border border-custom-300 text-sm"
+                        id="table-verified-data">
+                        <thead class="bg-custom-200">
+                            <tr>
+                                <th class="border px-2 py-1 text-center">Photo</th>
+                                <th class="border px-2 py-1 text-center">Report By</th>
+                                <th class="border px-2 py-1 text-center">License Plate Number</th>
+                                <th class="border px-2 py-1 text-center">Vehicle Brand</th>
+                                <th class="border px-2 py-1 text-center">Year of Vehicle</th>
+                                <th class="border px-2 py-1 text-center">Type of Vehicle</th>
+                                <th class="border px-2 py-1 text-center">Repair Date</th>
+                                <th class="border px-2 py-1 text-center">Status</th>
+                                <th class="border px-2 py-1 text-center">Inspector</th>
+                                <th class="border px-2 py-1 text-center">Reject Reason</th>
+                                <th class="border px-2 py-1 text-center">Action</th>
+                                <th class="border px-2 py-1 text-center">Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach($vehicles as $item)
+                                @if(!empty($item->status) && !empty($item->pemeriksa))
+                                    <tr
+                                        class="{{ $loop->even ? 'bg-gray-50' : 'bg-white' }} hover:bg-gray-100 transition-colors text-center">
+                                        <td class="border px-2 py-1 text-center">
+                                            @if($item->image)
+                                                <img src="{{ asset('storage/app/public/vehicle/' . $item->image) }}"
+                                                    class="w-16 h-12 object-cover rounded">
+                                            @else
+                                                <span class="text-gray-400 italic">No Image</span>
+                                            @endif
+                                        </td>
+                                        <td class="border px-2 py-1">{{ $item->nama_pelapor }}</td>
+                                        <td class="border px-2 py-1">{{ $item->no_polisi }}</td>
+                                        <td class="border px-2 py-1">{{ $item->merk }}</td>
+                                        <td class="border px-2 py-1">{{ $item->tahun }}</td>
+                                        <td class="border px-2 py-1">{{ $item->jenis }}</td>
+                                        <td class="border px-2 py-1">{{ $item->tanggal }}</td>
+                                        <td class="border px-2 py-1">
+                                            <span
+                                                class="text-lg font-bold {{ $item->status === '✔' ? 'text-green-600' : 'text-red-600' }}">
+                                                {{ $item->status }}
+                                            </span>
+                                        </td>
+                                        <td class="border px-2 py-1">{{ $item->pemeriksa }}</td>
+                                        <td class="border px-2 py-1">
+                                            {{ $item->status === '✖' && $item->reject_reason ? $item->reject_reason : '-' }}
+                                        </td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <button
+                                                class="inline-block text-center px-3 py-2 bg-custom-500 hover:bg-custom-600 text-white rounded transition-colors show-detail-btn"
+                                                data-vehicles='@json($item)'
+                                                data-tanggal="{{ \Carbon\Carbon::parse($item->tanggal)->format('d-m-Y') }}">
+                                                View Detailed Data
+                                            </button>
+                                        </td>
+                                        <td class="border px-2 py-1 text-center">
+                                            <form action="{{ url('/') }}/{{ $item->id }}/delete" method="POST" class="delete-form">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button"
+                                                    class="delete-btn w-full inline-block text-center px-3 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                @endif
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
-    </div>
     </div>
 
     <!-- Modal Verifikasi -->
@@ -163,14 +249,14 @@
             <form id="verification-form">
                 @csrf
                 @method('PUT')
-                
+
                 <div class="mb-4">
                     <label class="block text-sm font-medium mb-2">Verification Status</label>
-                    <select name="status" id="status-select" 
+                    <select name="status" id="status-select"
                         class="w-full border rounded px-3 py-2 focus:ring-2 focus:ring-blue-400" required>
                         <option value="" disabled selected>Select Status</option>
-                        <option value="✔">✔</option>
-                        <option value="✖">✖</option>
+                        <option value="✔">✔ Approved</option>
+                        <option value="✖">✖ Rejected</option>
                     </select>
                 </div>
 
@@ -190,7 +276,7 @@
 
                 <div class="flex gap-2 justify-end">
                     <button type="button" id="cancel-verification"
-                        class="px-4 py-2 bg-red-500 hover:bg-red-500 text-white rounded transition-colors">
+                        class="px-4 py-2 bg-red-500 hover:bg-red-600 text-white rounded transition-colors">
                         Cancel
                     </button>
                     <button type="submit"
@@ -211,8 +297,7 @@
                 <p>✖ : Tidak Baik, Rusak, Tidak Berfungsi, Tidak Nyala, Kotor</p>
             </div>
             <div class="mt-3 flex gap-2">
-                <button id="close-detail"
-                    class="px-4 py-2 bg-red-500 text-white rounded transition-colors">Close</button>
+                <button id="close-detail" class="px-4 py-2 bg-red-500 text-white rounded transition-colors">Close</button>
             </div>
         </div>
     </div>
@@ -226,6 +311,12 @@
             ]
         });
 
+        $('#table-update-data').DataTable({
+            columnDefs: [
+                { orderable: false, targets: [0, 1, 2, 3, 5, 7, 8, 9] }
+            ]
+        });
+
         $('#table-verified-data').DataTable({
             columnDefs: [
                 { orderable: false, targets: [0, 1, 2, 3, 5, 7, 8, 9, 10, 11] }
@@ -234,30 +325,41 @@
 
         // Tab Switching
         const tabPending = document.getElementById('tab-pending');
+        const tabUpdate = document.getElementById('tab-update');
         const tabVerified = document.getElementById('tab-verified');
         const tablePending = document.getElementById('table-pending');
+        const tableUpdate = document.getElementById('table-update');
         const tableVerified = document.getElementById('table-verified');
 
+        function resetTabs() {
+            [tabPending, tabUpdate, tabVerified].forEach(tab => {
+                tab.classList.remove('bg-red-500', 'bg-yellow-500', 'bg-custom-500', 'text-white');
+                tab.classList.add('bg-gray-300', 'text-gray-700',);
+            });
+            [tablePending, tableUpdate, tableVerified].forEach(table => {
+                table.classList.add('hidden');
+            });
+        }
+
         tabPending.addEventListener('click', () => {
+            resetTabs();
             tablePending.classList.remove('hidden');
-            tableVerified.classList.add('hidden');
-
-            tabPending.classList.add('bg-red-500', 'text-white');
             tabPending.classList.remove('bg-gray-300', 'text-gray-700');
+            tabPending.classList.add('bg-red-500', 'text-white');
+        });
 
-            tabVerified.classList.add('bg-gray-300', 'text-gray-700');
-            tabVerified.classList.remove('bg-custom-500', 'text-white');
+        tabUpdate.addEventListener('click', () => {
+            resetTabs();
+            tableUpdate.classList.remove('hidden');
+            tabUpdate.classList.remove('bg-gray-300', 'text-gray-700');
+            tabUpdate.classList.add('bg-yellow-500', 'text-white');
         });
 
         tabVerified.addEventListener('click', () => {
+            resetTabs();
             tableVerified.classList.remove('hidden');
-            tablePending.classList.add('hidden');
-
-            tabVerified.classList.add('bg-custom-500', 'text-white');
             tabVerified.classList.remove('bg-gray-300', 'text-gray-700');
-
-            tabPending.classList.add('bg-gray-300', 'text-gray-700');
-            tabPending.classList.remove('bg-red-500', 'text-white');
+            tabVerified.classList.add('bg-custom-500', 'text-white');
         });
 
         // Verification Modal
@@ -270,15 +372,15 @@
 
         // Show modal when verify button clicked
         document.querySelectorAll('.verify-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 let vehicleId = this.dataset.id;
-                verificationForm.action = `{{ url( '${vehicleId}/status') }}`;
+                verificationForm.action = `/${vehicleId}/status`;
                 verificationModal.classList.remove('hidden');
             });
         });
 
         // Toggle reject reason field
-        statusSelect.addEventListener('change', function() {
+        statusSelect.addEventListener('change', function () {
             if (this.value === '✖') {
                 rejectReasonField.classList.remove('hidden');
                 rejectReasonTextarea.required = true;
@@ -306,10 +408,9 @@
         });
 
         // Handle form submission
-        verificationForm.addEventListener('submit', function(e) {
+        verificationForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            // Validasi manual sebelum submit
             const statusValue = statusSelect.value;
             const rejectReasonValue = rejectReasonTextarea.value.trim();
 
@@ -342,12 +443,6 @@
             });
 
             const formData = new FormData(this);
-            
-            // Debug: Log data yang akan dikirim
-            console.log('Form Data:');
-            for (let pair of formData.entries()) {
-                console.log(pair[0] + ': ' + pair[1]);
-            }
 
             fetch(this.action, {
                 method: 'POST',
@@ -357,38 +452,38 @@
                     'Accept': 'application/json'
                 }
             })
-            .then(async res => {
-                const data = await res.json();
-                if (!res.ok) {
-                    console.error('Server Response:', data);
-                    throw new Error(data.message || "An error occurred while updating the data.");
-                }
-                return data;
-            })
-            .then(data => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Success!',
-                    text: 'Data verified successfully!',
-                    confirmButtonColor: '#3085d6'
-                }).then(() => {
-                    location.reload();
+                .then(async res => {
+                    const data = await res.json();
+                    if (!res.ok) {
+                        console.error('Server Response:', data);
+                        throw new Error(data.message || "An error occurred while updating the data.");
+                    }
+                    return data;
+                })
+                .then(data => {
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Success!',
+                        text: 'Data verified successfully!',
+                        confirmButtonColor: '#3085d6'
+                    }).then(() => {
+                        location.reload();
+                    });
+                })
+                .catch(err => {
+                    console.error('Error:', err);
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Failed!',
+                        text: err.message || 'An error occurred while updating the data.',
+                        footer: 'Please check browser console for error details'
+                    });
                 });
-            })
-            .catch(err => {
-                console.error('Error:', err);
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Failed!',
-                    text: err.message || 'An error occurred while updating the data.',
-                    footer: 'Silakan cek console browser untuk detail error'
-                });
-            });
         });
 
         // Delete confirmation
         document.querySelectorAll('.delete-btn').forEach(btn => {
-            btn.addEventListener('click', function(e) {
+            btn.addEventListener('click', function (e) {
                 e.preventDefault();
                 let form = this.closest('form');
 
@@ -442,7 +537,7 @@
                 const vehicles = JSON.parse(btn.dataset.vehicles || '{}');
                 const tanggalFormatted = btn.dataset.tanggal || vehicles.tanggal || '';
                 const assetUrl = '{{ asset("storage/app/public/damages/") }}';
-                
+
                 let html = `
                     <div class="grid grid-cols-2 gap-4 mb-4 text-sm rounded bg-gray-50 text-center">
                         <div class="flex items-center justify-center">
