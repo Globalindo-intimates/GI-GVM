@@ -408,78 +408,91 @@
         });
 
         // Handle form submission
-        verificationForm.addEventListener('submit', function (e) {
-            e.preventDefault();
+        // Handle form submission with improved error handling
+verificationForm.addEventListener('submit', function (e) {
+    e.preventDefault();
 
-            const statusValue = statusSelect.value;
-            const rejectReasonValue = rejectReasonTextarea.value.trim();
+    const statusValue = statusSelect.value;
+    const rejectReasonValue = rejectReasonTextarea.value.trim();
 
-            if (!statusValue) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Status is required!',
-                    text: 'You need to select a status first!'
-                });
-                return;
-            }
-
-            if (statusValue === '✖' && !rejectReasonValue) {
-                Swal.fire({
-                    icon: 'warning',
-                    title: 'Please provide a reason!',
-                    text: 'Rejection reason must be provided for rejected status!'
-                });
-                return;
-            }
-
-            Swal.fire({
-                title: 'Please wait...',
-                text: 'Processing verification...',
-                allowOutsideClick: false,
-                allowEscapeKey: false,
-                didOpen: () => {
-                    Swal.showLoading();
-                }
-            });
-
-            const formData = new FormData(this);
-
-            fetch(this.action, {
-                method: 'POST',
-                body: formData,
-                headers: {
-                    'X-Requested-With': 'XMLHttpRequest',
-                    'Accept': 'application/json'
-                }
-            })
-                .then(async res => {
-                    const data = await res.json();
-                    if (!res.ok) {
-                        console.error('Server Response:', data);
-                        throw new Error(data.message || "An error occurred while updating the data.");
-                    }
-                    return data;
-                })
-                .then(data => {
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success!',
-                        text: 'Data verified successfully!',
-                        confirmButtonColor: '#3085d6'
-                    }).then(() => {
-                        location.reload();
-                    });
-                })
-                .catch(err => {
-                    console.error('Error:', err);
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Failed!',
-                        text: err.message || 'An error occurred while updating the data.',
-                        footer: 'Please check browser console for error details'
-                    });
-                });
+    if (!statusValue) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Status is required!',
+            text: 'You need to select a status first!'
         });
+        return;
+    }
+
+    if (statusValue === '✖' && !rejectReasonValue) {
+        Swal.fire({
+            icon: 'warning',
+            title: 'Please provide a reason!',
+            text: 'Rejection reason must be provided for rejected status!'
+        });
+        return;
+    }
+
+    Swal.fire({
+        title: 'Please wait...',
+        text: 'Processing verification...',
+        allowOutsideClick: false,
+        allowEscapeKey: false,
+        didOpen: () => {
+            Swal.showLoading();
+        }
+    });
+
+    const formData = new FormData(this);
+
+    fetch(this.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-Requested-With': 'XMLHttpRequest',
+            'Accept': 'application/json'
+        }
+    })
+    .then(async res => {
+        // Check content type before parsing
+        const contentType = res.headers.get('content-type');
+        
+        if (!contentType || !contentType.includes('application/json')) {
+            // Server returned HTML instead of JSON (likely an error page)
+            const textResponse = await res.text();
+            console.error('Server returned non-JSON response:', textResponse.substring(0, 500));
+            throw new Error('Server error: Expected JSON response but received HTML. Check server logs.');
+        }
+
+        const data = await res.json();
+        
+        if (!res.ok) {
+            console.error('Server Response:', data);
+            throw new Error(data.message || `Server error: ${res.status} ${res.statusText}`);
+        }
+        
+        return data;
+    })
+    .then(data => {
+        Swal.fire({
+            icon: 'success',
+            title: 'Success!',
+            text: 'Data verified successfully!',
+            confirmButtonColor: '#3085d6'
+        }).then(() => {
+            location.reload();
+        });
+    })
+    .catch(err => {
+        console.error('Error:', err);
+        Swal.fire({
+            icon: 'error',
+            title: 'Failed!',
+            text: err.message || 'An error occurred while updating the data.',
+            footer: 'Please check browser console for error details'
+        });
+    });
+});
 
         // Delete confirmation
         document.querySelectorAll('.delete-btn').forEach(btn => {

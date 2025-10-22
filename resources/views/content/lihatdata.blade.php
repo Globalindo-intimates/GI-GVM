@@ -120,7 +120,6 @@
                 <div class="mb-3">
                     <h6 class="mb-2 text-xs font-semibold">Inspection Items</h6>
                     <div id="inspection-items" class="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        {{-- Items will be populated by JavaScript --}}
                     </div>
                 </div>  
 
